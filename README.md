@@ -22,7 +22,7 @@ Logic is then used to input a Pokémon name in English and output the Japanese n
 ## Roadmap
 
 - [x] Create a scraped dictionary of Pokémon names in English and Japanese
-- [ ] Persist the dictionary to a database
+- [X] Persist the dictionary to a database
 - [ ] Create a function that takes in a Pokémon name in English and outputs the Japanese name
 - [ ] Automatically copy the Japanese name to the clipboard
 - [ ] Package the function into a Google Chrome extension
