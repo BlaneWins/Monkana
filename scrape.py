@@ -1,6 +1,8 @@
-from bs4 import BeautifulSoup, NavigableString, Tag
+import firebase_admin
+from bs4 import BeautifulSoup
+from firebase_admin import credentials, db
 from selenium import webdriver
-import statistics
+
 
 driver = webdriver.Chrome()
 driver.get("https://bulbapedia.bulbagarden.net/wiki/List_of_Japanese_Pok%C3%A9mon_names")
@@ -41,5 +43,21 @@ def bulbapedia_pokemon_names_ja():
 extracted_english = bulbapedia_pokemon_names_en()
 extracted_kana = bulbapedia_pokemon_names_ja()
 
+extracted_english = tuple(key.encode('ascii', 'ignore').decode('ascii').replace("'", '').replace('.', '')
+                          .replace(' ', '_') for key in extracted_english)
+
 print(extracted_english)
 print(extracted_kana)
+
+combined_names = dict(zip(extracted_english, extracted_kana))
+
+print(combined_names)
+
+cred = credentials.Certificate('monkana_secret_key.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://monkana-7420d-default-rtdb.firebaseio.com/'
+})
+
+ref = db.reference('/')
+
+ref.set(combined_names)
